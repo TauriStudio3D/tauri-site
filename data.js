@@ -11,7 +11,7 @@ window.TAURI = {
   titulo: "Peças em PLA de origem vegetal, impressas sob encomenda.",
   subtitulo: "Veja o que já produzimos, escolha a cor da sua peça e faça o pedido pelo Instagram. Enviamos para todo o Brasil.",
   instagram: "tauristudio3d",  // só o usuário, sem @
-  whatsapp: "",                // com DDI e DDD, só números. Ex: "5511999999999". Vazio esconde o botão de WhatsApp no pedido e no contato.
+  whatsapp: "5511975456696",                // com DDI e DDD, só números. Ex: "5511999999999". Vazio esconde o botão de WhatsApp no pedido e no contato.
   textoContato: "Encomendas por DM no Instagram. Conte o que você precisa e a gente responde com prazo e valor.",
 
   // ---- Categorias dos produtos ----

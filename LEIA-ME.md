@@ -9,7 +9,7 @@ index.html   estrutura da página (não precisa mexer)
 style.css    visual
 app.js       lógica da galeria e do catálogo
 data.js      TEXTOS, FOTOS, VÍDEOS E CORES (é aqui que você edita)
-media/       logo.jpg e as fotos e vídeos dos produtos
+media/       logo.webp, favicon.png e as fotos e vídeos dos produtos
 ```
 
 ## Como atualizar

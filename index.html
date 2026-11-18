@@ -18,6 +18,7 @@
   <nav>
     <a href="#produtos">Produtos</a>
     <a href="#cores">Cores</a>
+    <a href="#pedido">Pedido</a>
     <a href="#contato">Contato</a>
   </nav>
 </header>
@@ -54,6 +55,57 @@
     <p class="empty" id="colors-empty" hidden>Nenhuma cor encontrada.</p>
   </section>
 
+  <section id="pedido">
+    <h2>Monte seu pedido</h2>
+    <p class="section-note">Escolha as peças e envie a lista por WhatsApp ou Instagram. O valor do orçamento a gente responde por mensagem.</p>
+    <div class="order-grid">
+      <form id="order-form" class="panel" novalidate>
+        <h3>Adicionar peça</h3>
+        <label>Produto
+          <select id="o-produto" required></select>
+        </label>
+        <label id="o-outro-wrap" hidden>Qual peça?
+          <input id="o-outro" type="text" maxlength="120" placeholder="Ex.: suporte de fone, nome em 3D">
+        </label>
+        <label>Cor
+          <select id="o-cor"></select>
+        </label>
+        <div class="row2">
+          <label>Quantidade
+            <input id="o-qtd" type="number" min="1" max="999" value="1" inputmode="numeric">
+          </label>
+          <label>Tamanho
+            <input id="o-tamanho" type="text" maxlength="60" placeholder="Ex.: 20 cm">
+          </label>
+        </div>
+        <p class="hint" id="o-tamanho-hint">O tamanho já vem com o padrão do produto. Pode editar.</p>
+        <p class="form-error" id="o-erro" role="alert" hidden></p>
+        <button class="btn primary" type="submit">Adicionar ao pedido</button>
+      </form>
+
+      <div class="panel" id="order-summary">
+        <h3>Seu pedido</h3>
+        <ul id="order-list" class="order-list"></ul>
+        <p class="empty" id="order-empty">Nenhuma peça adicionada ainda.</p>
+        <label>Seu nome
+          <input id="o-nome" type="text" maxlength="80" placeholder="Como podemos te chamar?">
+        </label>
+        <label>Observações
+          <textarea id="o-obs" rows="3" maxlength="500" placeholder="Prazo, mais de uma cor na mesma peça, personalização..."></textarea>
+        </label>
+        <details class="msg-preview">
+          <summary>Ver a mensagem que será enviada</summary>
+          <textarea id="o-msg" rows="9" readonly></textarea>
+        </details>
+        <div class="actions">
+          <button class="btn primary" type="button" id="send-wa" hidden>Enviar pelo WhatsApp</button>
+          <button class="btn" type="button" id="send-ig">Enviar pelo Instagram</button>
+        </div>
+        <p class="hint" id="o-feedback" role="status"></p>
+      </div>
+    </div>
+  </section>
+
   <section id="contato" class="contact">
     <h2>Fale com a gente</h2>
     <p id="contact-text">Pedidos e orçamentos pelo Instagram.</p>
@@ -80,6 +132,7 @@
       </div>
     </div>
     <div id="cm-body"></div>
+    <div class="cm-actions"><button class="btn primary" type="button" id="cm-order">Pedir nesta cor</button></div>
   </div>
 </div>
 

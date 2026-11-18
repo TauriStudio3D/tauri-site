@@ -23,6 +23,14 @@ media/       logo.webp, favicon.png e as fotos e vídeos dos produtos
 
 Antes de publicar, apague os produtos de exemplo e troque as cores de exemplo pelas reais.
 
+## Pedido (orçamento)
+
+O cliente monta a lista (produto, cor, quantidade e tamanho) e envia para você. Não há preços no site.
+
+- O tamanho sugerido de cada produto vem de `tamanhoPadrao` no `data.js`. O cliente pode editar.
+- WhatsApp: preencha `whatsapp` no `data.js` (DDI + DDD + número, só dígitos, por exemplo "5511999999999"). Com o campo vazio, o botão de WhatsApp fica escondido.
+- Instagram: o direct não aceita texto pronto no link. O botão copia a lista e abre a conversa, e o cliente cola a mensagem.
+
 ## Preparar fotos e vídeos
 
 - Fotos: JPG ou WebP, até 1600 px no lado maior. Fica leve e carrega rápido.

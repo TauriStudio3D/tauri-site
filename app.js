@@ -160,6 +160,12 @@
         desc.textContent = p.descricao;
         info.appendChild(desc);
       }
+      var ob = document.createElement("button");
+      ob.type = "button";
+      ob.className = "order-btn";
+      ob.textContent = "Pedir este produto";
+      ob.addEventListener("click", function () { prefillOrder({ produto: D.produtos.indexOf(p) }); });
+      info.appendChild(ob);
       card.appendChild(info);
       gallery.appendChild(card);
     });
@@ -252,7 +258,9 @@
 
   // Janela da cor (clique ou toque)
   var modal = $("color-modal");
+  var currentColor = null;
   function openColor(c) {
+    currentColor = c;
     hidePop();
     $("cm-dot").style.backgroundColor = c.hex;
     $("cm-title").textContent = c.nome;
@@ -276,6 +284,11 @@
   }
   modal.addEventListener("click", function (e) {
     if (e.target === modal || e.target.closest(".modal-close")) closeColor();
+  });
+  $("cm-order").addEventListener("click", function () {
+    var c = currentColor;
+    closeColor();
+    if (c) prefillOrder({ cor: D.cores.indexOf(c) });
   });
   document.addEventListener("keydown", function (e) {
     if (e.key === "Escape" && lb.hidden && !modal.hidden) closeColor();
@@ -328,6 +341,197 @@
       wrap.appendChild(el);
     });
   }
+
+  // ---------- Pedido ----------
+  var items = [];
+  var tamanhoEditado = false;
+  var selProd = $("o-produto"), selCor = $("o-cor"), inQtd = $("o-qtd"),
+      inTam = $("o-tamanho"), inOutro = $("o-outro"), erro = $("o-erro"),
+      feedback = $("o-feedback");
+
+  // Opções de produto
+  D.produtos.forEach(function (p, i) {
+    var o = document.createElement("option");
+    o.value = String(i);
+    o.textContent = p.nome;
+    selProd.appendChild(o);
+  });
+  var oo = document.createElement("option");
+  oo.value = "outro";
+  oo.textContent = "Outra peça (descrever)";
+  selProd.appendChild(oo);
+
+  // Opções de cor, agrupadas por material
+  var o0 = document.createElement("option");
+  o0.value = "";
+  o0.textContent = "A combinar";
+  selCor.appendChild(o0);
+  materials.forEach(function (m) {
+    var g = document.createElement("optgroup");
+    g.label = m;
+    D.cores.forEach(function (c, i) {
+      if (c.material !== m) return;
+      var o = document.createElement("option");
+      o.value = String(i);
+      o.textContent = c.nome + (c.acabamento ? " (" + c.acabamento + ")" : "");
+      g.appendChild(o);
+    });
+    selCor.appendChild(g);
+  });
+
+  function defaultSize() {
+    var v = selProd.value;
+    if (v === "outro") return "";
+    var p = D.produtos[Number(v)];
+    return (p && p.tamanhoPadrao) || "";
+  }
+  function syncProduct() {
+    $("o-outro-wrap").hidden = selProd.value !== "outro";
+    if (!tamanhoEditado) inTam.value = defaultSize();
+    $("o-tamanho-hint").textContent = selProd.value === "outro"
+      ? "Informe o tamanho que você precisa."
+      : "O tamanho já vem com o padrão do produto. Pode editar.";
+  }
+  selProd.addEventListener("change", syncProduct);
+  inTam.addEventListener("input", function () { tamanhoEditado = true; });
+
+  function colorLabel(idx) {
+    if (idx === "" || idx == null) return "A combinar";
+    var c = D.cores[Number(idx)];
+    return c.nome + " (" + c.material + (c.acabamento ? ", " + c.acabamento : "") + ")";
+  }
+
+  function showError(msg) {
+    erro.textContent = msg || "";
+    erro.hidden = !msg;
+  }
+
+  $("order-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var nome;
+    if (selProd.value === "outro") {
+      nome = inOutro.value.trim();
+      if (!nome) { showError("Descreva qual peça você quer."); inOutro.focus(); return; }
+    } else {
+      nome = D.produtos[Number(selProd.value)].nome;
+    }
+    var qtd = parseInt(inQtd.value, 10);
+    if (!qtd || qtd < 1) { showError("A quantidade precisa ser pelo menos 1."); inQtd.focus(); return; }
+    if (qtd > 999) qtd = 999;
+    showError("");
+    items.push({
+      produto: nome,
+      cor: colorLabel(selCor.value),
+      qtd: qtd,
+      tamanho: inTam.value.trim() || "A combinar"
+    });
+    // volta o formulário ao estado inicial para a próxima peça
+    inQtd.value = "1";
+    inOutro.value = "";
+    tamanhoEditado = false;
+    syncProduct();
+    renderOrder();
+    feedback.textContent = "Peça adicionada. Você pode incluir outras ou enviar o pedido.";
+  });
+
+  function buildMessage() {
+    var lines = ["Olá, " + D.nome + "! Gostaria de um orçamento:", ""];
+    items.forEach(function (it, i) {
+      lines.push((i + 1) + ") " + it.produto);
+      lines.push("   Cor: " + it.cor);
+      lines.push("   Quantidade: " + it.qtd);
+      lines.push("   Tamanho: " + it.tamanho);
+      lines.push("");
+    });
+    var nome = $("o-nome").value.trim();
+    var obs = $("o-obs").value.trim();
+    if (nome) lines.push("Nome: " + nome);
+    if (obs) lines.push("Observações: " + obs);
+    return lines.join("\n").replace(/\n+$/, "") + "\n";
+  }
+
+  function renderOrder() {
+    var ul = $("order-list");
+    ul.innerHTML = "";
+    items.forEach(function (it, i) {
+      var li = document.createElement("li");
+      var box = document.createElement("div");
+      var n = document.createElement("div");
+      n.className = "it-name";
+      n.textContent = it.qtd + "× " + it.produto;
+      var m = document.createElement("div");
+      m.className = "it-meta";
+      m.textContent = "Cor: " + it.cor + " • Tamanho: " + it.tamanho;
+      box.appendChild(n);
+      box.appendChild(m);
+      var rm = document.createElement("button");
+      rm.type = "button";
+      rm.className = "it-remove";
+      rm.textContent = "Remover";
+      rm.setAttribute("aria-label", "Remover " + it.produto + " do pedido");
+      rm.addEventListener("click", function () {
+        items.splice(i, 1);
+        feedback.textContent = "";
+        renderOrder();
+      });
+      li.appendChild(box);
+      li.appendChild(rm);
+      ul.appendChild(li);
+    });
+    $("order-empty").hidden = items.length > 0;
+    $("send-wa").disabled = items.length === 0;
+    $("send-ig").disabled = items.length === 0;
+    $("o-msg").value = items.length ? buildMessage() : "";
+  }
+  $("o-nome").addEventListener("input", renderOrder);
+  $("o-obs").addEventListener("input", renderOrder);
+
+  // WhatsApp: abre a conversa com a mensagem pronta
+  if (D.whatsapp) $("send-wa").hidden = false;
+  $("send-wa").addEventListener("click", function () {
+    if (!items.length) return;
+    var url = "https://wa.me/" + D.whatsapp + "?text=" + encodeURIComponent(buildMessage());
+    window.open(url, "_blank", "noopener");
+    feedback.textContent = "Abrimos o WhatsApp com o pedido pronto. Confira e envie.";
+  });
+
+  // Instagram: o direct não aceita texto pronto no link, então copiamos a mensagem
+  $("send-ig").addEventListener("click", function () {
+    if (!items.length) return;
+    var msg = buildMessage();
+    var url = "https://ig.me/m/" + D.instagram;
+    function open() { window.open(url, "_blank", "noopener"); }
+    var done = function () {
+      feedback.textContent = "Pedido copiado. Cole na conversa do Instagram que vai abrir e envie.";
+      open();
+    };
+    var fail = function () {
+      $("order-summary").querySelector("details").open = true;
+      $("o-msg").focus();
+      $("o-msg").select();
+      feedback.textContent = "Não consegui copiar sozinho. Copie a mensagem acima, depois abra o Instagram e cole.";
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(msg).then(done, fail);
+    } else {
+      fail();
+    }
+  });
+
+  // Atalhos vindos dos produtos e das cores
+  function prefillOrder(opts) {
+    if (opts.produto != null && opts.produto >= 0) {
+      selProd.value = String(opts.produto);
+      tamanhoEditado = false;
+      syncProduct();
+    }
+    if (opts.cor != null && opts.cor >= 0) selCor.value = String(opts.cor);
+    $("pedido").scrollIntoView({ behavior: "smooth", block: "start" });
+    setTimeout(function () { inQtd.focus({ preventScroll: true }); }, 400);
+  }
+
+  syncProduct();
+  renderOrder();
 
   renderProducts();
   renderColors();

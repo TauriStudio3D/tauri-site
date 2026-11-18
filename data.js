@@ -11,7 +11,7 @@ window.TAURI = {
   titulo: "Peças em PLA de origem vegetal, impressas sob encomenda.",
   subtitulo: "Veja o que já produzimos, escolha a cor da sua peça e faça o pedido pelo Instagram. Enviamos para todo o Brasil.",
   instagram: "tauristudio3d",  // só o usuário, sem @
-  whatsapp: "",                // com DDI e DDD, só números. Ex: "5511999999999". Deixe vazio para esconder o botão.
+  whatsapp: "",                // com DDI e DDD, só números. Ex: "5511999999999". Vazio esconde o botão de WhatsApp no pedido e no contato.
   textoContato: "Encomendas por DM no Instagram. Conte o que você precisa e a gente responde com prazo e valor.",
 
   // ---- Categorias dos produtos ----
@@ -25,11 +25,13 @@ window.TAURI = {
   // ---- Produtos ----
   // Cada produto tem um carrossel (midia) com quantas fotos e vídeos você quiser.
   // categoria: um dos ids acima
+  // tamanhoPadrao: tamanho sugerido no pedido (o cliente pode editar)
   // midia: lista de { type: "photo" ou "video", src: "media/arquivo", poster: "capa do vídeo (opcional)" }
   // A primeira mídia da lista aparece primeiro no carrossel.
   produtos: [
     {
       nome: "Árvore de Natal",
+      tamanhoPadrao: "20 cm",
       categoria: "decoracao",
       descricao: "PLA • 20 cm • várias cores",
       midia: [
@@ -40,6 +42,7 @@ window.TAURI = {
     },
     {
       nome: "Vaso geométrico",
+      tamanhoPadrao: "12 cm",
       categoria: "decoracao",
       descricao: "PLA • 12 cm",
       midia: [
@@ -49,6 +52,7 @@ window.TAURI = {
     },
     {
       nome: "Dinossauro articulado",
+      tamanhoPadrao: "18 cm",
       categoria: "brinquedos",
       descricao: "PLA • 18 cm • articulado",
       midia: [
@@ -58,6 +62,7 @@ window.TAURI = {
     },
     {
       nome: "Crocodilo flexível",
+      tamanhoPadrao: "25 cm",
       categoria: "brinquedos",
       descricao: "PLA • 25 cm",
       midia: [

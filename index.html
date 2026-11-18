@@ -3,17 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tauri | Impressão 3D</title>
-  <meta name="description" content="Tauri, empresa de impressão 3D. Veja nossos produtos e o catálogo de cores disponíveis.">
-  <meta property="og:title" content="Tauri | Impressão 3D">
+  <title>Tauri Studio 3D | Impressão 3D</title>
+  <meta name="description" content="Tauri Studio 3D: impressão 3D com PLA de origem vegetal e envio para todo o Brasil. Veja os produtos e o catálogo de cores.">
+  <meta property="og:title" content="Tauri Studio 3D | Impressão 3D">
   <meta property="og:description" content="Produtos impressos em 3D e catálogo de cores.">
   <meta property="og:type" content="website">
+  <link rel="icon" href="media/logo.jpg">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="topbar">
-  <a class="brand" href="#inicio" id="brand-name">Tauri</a>
+  <a class="brand" href="#inicio" aria-label="Tauri Studio 3D, início"><img src="media/logo.jpg" alt="Logo da Tauri Studio 3D" width="44" height="44"></a>
   <nav>
     <a href="#produtos">Produtos</a>
     <a href="#cores">Cores</a>
@@ -23,29 +24,28 @@
 
 <main>
   <section class="hero" id="inicio">
-    <p class="eyebrow">Impressão 3D</p>
-    <h1 id="hero-title">Peças impressas em 3D, feitas com cuidado.</h1>
-    <p class="lead" id="hero-text">Veja o que já produzimos e escolha a cor da sua peça no catálogo.</p>
-    <div class="actions">
-      <a class="btn primary" href="#produtos">Ver produtos</a>
-      <a class="btn" href="#cores">Catálogo de cores</a>
+    <img class="hero-logo" src="media/logo.jpg" alt="Logo da Tauri Studio 3D: cabeça de touro geométrica e a frase criatividade em cada camada" width="260" height="260">
+    <div class="hero-text">
+      <p class="eyebrow">Impressão 3D</p>
+      <h1 id="hero-title">Peças em PLA de origem vegetal, impressas sob encomenda.</h1>
+      <p class="lead" id="hero-text">Veja o que já produzimos e escolha a cor da sua peça.</p>
+      <div class="actions">
+        <a class="btn primary" href="#produtos">Ver produtos</a>
+        <a class="btn" href="#cores">Catálogo de cores</a>
+      </div>
     </div>
   </section>
 
   <section id="produtos">
     <h2>Nossos produtos</h2>
-    <div class="filters" id="media-filters" role="group" aria-label="Filtrar por tipo">
-      <button class="chip active" data-filter="all">Todos</button>
-      <button class="chip" data-filter="photo">Fotos</button>
-      <button class="chip" data-filter="video">Vídeos</button>
-    </div>
+    <div class="filters" id="category-filters" role="group" aria-label="Filtrar por categoria"></div>
     <div class="gallery" id="gallery"></div>
-    <p class="empty" id="gallery-empty" hidden>Nada por aqui ainda.</p>
+    <p class="empty" id="gallery-empty" hidden>Nenhum produto nesta categoria ainda.</p>
   </section>
 
   <section id="cores">
     <h2>Catálogo de cores</h2>
-    <p class="section-note">Toque em uma cor para ver o nome e o código. As cores na tela podem variar um pouco da peça real.</p>
+    <p class="section-note">Passe o mouse ou toque em uma cor para ver peças feitas nela. As cores na tela podem variar um pouco da peça real.</p>
     <div class="color-tools">
       <div class="filters" id="material-filters" role="group" aria-label="Filtrar por material"></div>
       <input id="color-search" type="search" placeholder="Buscar cor" aria-label="Buscar cor">
@@ -59,6 +59,7 @@
     <p id="contact-text">Pedidos e orçamentos pelo Instagram.</p>
     <div class="actions">
       <a class="btn primary" id="btn-instagram" href="#" target="_blank" rel="noopener">Chamar no Instagram</a>
+      <a class="btn" id="btn-profile" href="#" target="_blank" rel="noopener">Ver perfil</a>
       <a class="btn" id="btn-whatsapp" href="#" target="_blank" rel="noopener" hidden>WhatsApp</a>
     </div>
   </section>
@@ -67,6 +68,20 @@
 <footer>
   <p>© <span id="year"></span> <span id="footer-name">Tauri</span></p>
 </footer>
+
+<div class="modal" id="color-modal" hidden>
+  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="cm-title">
+    <button class="modal-close" type="button" aria-label="Fechar">×</button>
+    <div class="cm-head">
+      <span class="cm-dot" id="cm-dot"></span>
+      <div>
+        <h3 id="cm-title"></h3>
+        <p id="cm-meta"></p>
+      </div>
+    </div>
+    <div id="cm-body"></div>
+  </div>
+</div>
 
 <div class="lightbox" id="lightbox" hidden>
   <button class="lb-close" aria-label="Fechar">×</button>

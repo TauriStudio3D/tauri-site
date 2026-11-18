@@ -9,16 +9,19 @@ index.html   estrutura da página (não precisa mexer)
 style.css    visual
 app.js       lógica da galeria e do catálogo
 data.js      TEXTOS, FOTOS, VÍDEOS E CORES (é aqui que você edita)
-media/       coloque aqui suas fotos e vídeos
+media/       logo.jpg e as fotos e vídeos dos produtos
 ```
 
 ## Como atualizar
 
-1. Copie a foto ou o vídeo para a pasta `media/`.
-2. Abra `data.js` e adicione uma linha em `midia` (ou em `cores`).
-3. Suba as mudanças.
+1. Copie as fotos e vídeos para a pasta `media/`.
+2. Abra `data.js`. Em `produtos`, cada produto tem uma lista `midia`, que vira o carrossel dele. Misture fotos e vídeos como quiser.
+3. Para um produto novo, copie um bloco existente, troque nome, categoria, descrição e arquivos.
+4. Para uma categoria nova, adicione uma linha em `categorias` e use o mesmo `id` no produto.
+5. Para cores, adicione linhas em `cores`. Se uma cor tiver `fotos`, passar o mouse mostra uma prévia e clicar abre o carrossel de peças nessa cor. Sem `fotos`, o clique mostra só o nome e o código.
+6. Suba as mudanças.
 
-Antes de publicar, troque no `data.js` o `instagram: "tauri3d"` pelo usuário real e apague os três itens de exemplo em `midia`.
+Antes de publicar, apague os produtos de exemplo e troque as cores de exemplo pelas reais.
 
 ## Preparar fotos e vídeos
 

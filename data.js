@@ -33,9 +33,9 @@ window.TAURI = {
   produtos: [
     {
       nome: "Anquilossauro Articulado",
-      tamanhoPadrao: "14 cm",
+      tamanhoPadrao: "15 cm",
       categoria: "brinquedos",
-      descricao: "PLA • Comprimento: 14 cm • articulado",
+      descricao: "PLA • Comprimento: 15 cm • articulado",
       preco: "R$ 12,00",
       midia: [
         { type: "photo", src: "media/anquilossauro-1.webp" }

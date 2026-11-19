@@ -78,7 +78,8 @@ window.TAURI = {
       descricao: "PLA • Comprimento: 17 cm • articulado",
       preco: "R$ 23,00",
       midia: [
-        { type: "photo", src: "media/peixe-pescador-1.webp" }
+        { type: "photo", src: "media/peixe-pescador-1.webp" },
+        { type: "video", src: "media/peixe-pescador-video.mp4", poster: "media/peixe-pescador-video.jpg", autoplay: true }
       ]
     },
     {
@@ -99,7 +100,8 @@ window.TAURI = {
       descricao: "PLA • Comprimento: 20 cm • articulado",
       preco: "R$ 16,00",
       midia: [
-        { type: "photo", src: "media/espinossauro-1.webp" }
+        { type: "photo", src: "media/espinossauro-1.webp" },
+        { type: "video", src: "media/espinossauro-video.mp4", poster: "media/espinossauro-video.jpg", autoplay: true }
       ]
     },
     {

@@ -8,6 +8,12 @@
   <meta property="og:title" content="Tauri Studio 3D | Impressão 3D">
   <meta property="og:description" content="Produtos impressos em 3D e catálogo de cores.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tauristudio3d.github.io/tauri-site/">
+  <meta property="og:image" content="https://tauristudio3d.github.io/tauri-site/media/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://tauristudio3d.github.io/tauri-site/media/og-image.jpg">
   <link rel="icon" type="image/png" href="media/favicon.png">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -15,12 +21,21 @@
 
 <header class="topbar">
   <a class="brand" href="#inicio" aria-label="Tauri Studio 3D, início"><img src="media/logo.webp" alt="Logo da Tauri Studio 3D" width="44" height="44"></a>
-  <nav>
-    <a href="#produtos">Produtos</a>
-    <a href="#cores">Cores</a>
-    <a href="#pedido">Pedido</a>
-    <a href="#contato">Contato</a>
-  </nav>
+  <div class="top-right">
+    <nav>
+      <a href="#produtos">Produtos</a>
+      <a href="#cores">Cores</a>
+      <a href="#pedido">Pedido</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <a class="ig-icon" id="top-instagram" href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram da Tauri Studio 3D" title="Instagram">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+        <circle cx="12" cy="12" r="4.2"></circle>
+        <circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"></circle>
+      </svg>
+    </a>
+  </div>
 </header>
 
 <main>
@@ -39,6 +54,7 @@
 
   <section id="produtos">
     <h2>Nossos produtos</h2>
+    <p class="price-note" id="price-note" hidden></p>
     <div class="filters" id="category-filters" role="group" aria-label="Filtrar por categoria"></div>
     <div class="gallery" id="gallery"></div>
     <p class="empty" id="gallery-empty" hidden>Nenhum produto nesta categoria ainda.</p>
@@ -57,7 +73,7 @@
 
   <section id="pedido">
     <h2>Monte seu pedido</h2>
-    <p class="section-note">Escolha as peças e envie a lista por WhatsApp ou Instagram. O valor do orçamento a gente responde por mensagem.</p>
+    <p class="section-note">Escolha as peças e envie a lista por WhatsApp ou Instagram. O orçamento final a gente responde por mensagem.</p>
     <div class="order-grid">
       <form id="order-form" class="panel" novalidate>
         <h3>Adicionar peça</h3>

@@ -8,10 +8,12 @@
   $("hero-title").textContent = D.titulo;
   $("hero-text").textContent = D.subtitulo;
   $("contact-text").textContent = D.textoContato;
+  if (D.avisoPreco) { var pn = $("price-note"); pn.textContent = D.avisoPreco; pn.hidden = false; }
   $("year").textContent = new Date().getFullYear();
 
   $("btn-instagram").href = "https://ig.me/m/" + D.instagram; // abre o direct
   $("btn-profile").href = "https://www.instagram.com/" + D.instagram + "/";
+  $("top-instagram").href = "https://www.instagram.com/" + D.instagram + "/";
   if (D.whatsapp) {
     var wa = $("btn-whatsapp");
     wa.href = "https://wa.me/" + D.whatsapp;
@@ -65,6 +67,7 @@
         img.src = m.src;
         img.alt = nome;
         img.loading = "lazy";
+        if (m.foco) img.style.objectPosition = m.foco;
         slide.appendChild(img);
         slide.addEventListener("click", function () { openLightbox(m, nome); });
       }
@@ -118,7 +121,10 @@
   D.categorias.forEach(function (c) { catName[c.id] = c.nome; });
 
   var cf = $("category-filters");
-  [{ id: "all", nome: "Todos" }].concat(D.categorias).forEach(function (c) {
+  var catsComProduto = D.categorias.filter(function (c) {
+    return D.produtos.some(function (p) { return p.categoria === c.id; });
+  }); // categoria sem produto não aparece nos filtros
+  [{ id: "all", nome: "Todos" }].concat(catsComProduto).forEach(function (c) {
     var b = document.createElement("button");
     b.className = "chip" + (c.id === "all" ? " active" : "");
     b.type = "button";
@@ -160,6 +166,12 @@
         desc.textContent = p.descricao;
         info.appendChild(desc);
       }
+      if (p.preco) {
+        var pr = document.createElement("p");
+        pr.className = "price";
+        pr.textContent = p.preco;
+        info.appendChild(pr);
+      }
       var ob = document.createElement("button");
       ob.type = "button";
       ob.className = "order-btn";
@@ -181,6 +193,7 @@
   });
 
   var mf = $("material-filters");
+  mf.hidden = materials.length < 2;
   ["all"].concat(materials).forEach(function (m) {
     var b = document.createElement("button");
     b.className = "chip" + (m === "all" ? " active" : "");
@@ -210,8 +223,25 @@
   document.body.appendChild(pop);
   var popTimer = null;
 
+  // Pinta o elemento sem mexer na camada de brilho (classe .silk) definida no CSS
+  function paint(el, hex) {
+    el.style.backgroundImage = "";
+    el.style.backgroundColor = "";
+    if (Array.isArray(hex)) el.style.backgroundImage = "linear-gradient(135deg, " + hex.join(", ") + ")";
+    else el.style.backgroundColor = hex;
+  }
+  function isSilk(c) { return /silk/i.test(c.acabamento || ""); }
+  function hexLabel(hex) {
+    return Array.isArray(hex) ? "Multicolor" : hex.toUpperCase();
+  }
+
+  // O catálogo de cores mostra no máximo 3 fotos por cor.
+  function fotosCor(c) { return (c.fotos || []).slice(0, 3); }
+
   function stills(c) {
-    return (c.fotos || []).map(function (m) { return m.type === "video" ? m.poster : m.src; }).filter(Boolean);
+    return fotosCor(c)
+      .map(function (m) { return { src: m.type === "video" ? m.poster : m.src, foco: m.foco }; })
+      .filter(function (s) { return s.src; });
   }
   function hidePop() {
     clearInterval(popTimer);
@@ -224,14 +254,15 @@
     clearInterval(popTimer);
     pop.innerHTML = "";
     var img = document.createElement("img");
-    img.src = imgs[0];
+    img.src = imgs[0].src;
+    img.style.objectPosition = imgs[0].foco || "";
     img.alt = "Peça na cor " + c.nome;
     var label = document.createElement("div");
     label.className = "pop-name";
     label.textContent = c.nome;
-    if (c.fotos.length > 1) {
+    if (fotosCor(c).length > 1) {
       var s = document.createElement("small");
-      s.textContent = " • " + c.fotos.length + " itens";
+      s.textContent = " • " + fotosCor(c).length + " itens";
       label.appendChild(s);
     }
     pop.appendChild(img);
@@ -250,7 +281,8 @@
       var k = 0;
       popTimer = setInterval(function () {
         k = (k + 1) % imgs.length;
-        img.src = imgs[k];
+        img.src = imgs[k].src;
+        img.style.objectPosition = imgs[k].foco || "";
       }, 1200);
     }
   }
@@ -262,13 +294,14 @@
   function openColor(c) {
     currentColor = c;
     hidePop();
-    $("cm-dot").style.backgroundColor = c.hex;
+    paint($("cm-dot"), c.hex);
+    $("cm-dot").classList.toggle("silk", isSilk(c));
     $("cm-title").textContent = c.nome;
-    $("cm-meta").textContent = [c.material, c.acabamento, c.codigo || c.hex.toUpperCase()].filter(Boolean).join(" • ");
+    $("cm-meta").textContent = [c.material, c.acabamento, c.codigo || hexLabel(c.hex)].filter(Boolean).join(" • ");
     var body = $("cm-body");
     body.innerHTML = "";
-    if (c.fotos && c.fotos.length) {
-      body.appendChild(buildCarousel(c.fotos, "peças na cor " + c.nome));
+    if (fotosCor(c).length) {
+      body.appendChild(buildCarousel(fotosCor(c), "peças na cor " + c.nome));
     } else {
       var p = document.createElement("p");
       p.className = "cm-empty";
@@ -312,8 +345,8 @@
       el.setAttribute("aria-label", "Ver peças na cor " + c.nome);
 
       var dot = document.createElement("div");
-      dot.className = "dot" + (c.acabamento && /silk/i.test(c.acabamento) ? " silk" : "");
-      dot.style.backgroundColor = c.hex;
+      dot.className = "dot" + (isSilk(c) ? " silk" : "");
+      paint(dot, c.hex);
 
       var name = document.createElement("div");
       name.className = "name";
@@ -326,10 +359,10 @@
       el.appendChild(dot);
       el.appendChild(name);
       el.appendChild(meta);
-      if (c.fotos && c.fotos.length) {
+      if (fotosCor(c).length) {
         var hp = document.createElement("div");
         hp.className = "has-photos";
-        hp.textContent = c.fotos.length + (c.fotos.length > 1 ? " fotos" : " foto");
+        hp.textContent = fotosCor(c).length + (fotosCor(c).length > 1 ? " fotos" : " foto");
         el.appendChild(hp);
       }
 
@@ -398,7 +431,7 @@
   function colorLabel(idx) {
     if (idx === "" || idx == null) return "A combinar";
     var c = D.cores[Number(idx)];
-    return c.nome + " (" + c.material + (c.acabamento ? ", " + c.acabamento : "") + ")";
+    return c.nome + " (" + c.material + (c.acabamento ? " " + c.acabamento : "") + ")";
   }
 
   function showError(msg) {

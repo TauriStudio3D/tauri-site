@@ -26,7 +26,7 @@ window.TAURI = {
   // Cada produto tem um carrossel (midia) com quantas fotos e vídeos você quiser.
   // categoria: um dos ids acima
   // tamanhoPadrao: tamanho sugerido no pedido (o cliente pode editar)
-  // midia: lista de { type: "photo" ou "video", src: "media/arquivo", poster: "capa do vídeo (opcional)" }
+  // midia: lista de { type: "photo" ou "video", src: "media/arquivo", poster: "capa do vídeo (opcional)", autoplay: true (opcional: começa sozinho, sem som, e repete) }
   // descricao: sempre "PLA • Comprimento: X cm" ou "PLA • Altura: X cm", mais um detalhe opcional.
   // preco: texto livre mostrado no cartão (opcional), ex.: "R$ 12,00"
   // A primeira mídia da lista aparece primeiro no carrossel.
@@ -88,7 +88,8 @@ window.TAURI = {
       descricao: "PLA • Comprimento: 20 cm • articulado",
       preco: "R$ 12,00",
       midia: [
-        { type: "photo", src: "media/mosassauro-1.webp" }
+        { type: "photo", src: "media/mosassauro-1.webp" },
+        { type: "video", src: "media/mosassauro-video.mp4", poster: "media/mosassauro-video.jpg", autoplay: true }
       ]
     },
     {

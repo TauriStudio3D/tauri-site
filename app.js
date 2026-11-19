@@ -37,6 +37,26 @@
   });
 
   // ---------- Carrossel ----------
+  // Vídeo com autoplay: começa 0,5 s depois de ficar visível, repete sem parar e pausa ao sair da tela.
+  // Navegadores só permitem autoplay sem som, e estes vídeos não têm áudio.
+  function autoplayWhenVisible(v, slide) {
+    v.muted = true;
+    v.loop = true; // repete sem parar enquanto estiver visível
+    v.preload = "auto";
+    var timer = null;
+    if (!("IntersectionObserver" in window)) return;
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        clearTimeout(timer);
+        if (e.isIntersecting) {
+          timer = setTimeout(function () { var p = v.play(); if (p && p.catch) p.catch(function () {}); }, 500);
+        } else {
+          v.pause();
+        }
+      });
+    }, { threshold: 0.6 }).observe(slide);
+  }
+
   function buildCarousel(midia, nome) {
     var wrap = document.createElement("div");
     wrap.className = "carousel";
@@ -57,6 +77,7 @@
         v.preload = "metadata";
         v.playsInline = true;
         if (m.poster) v.poster = m.poster;
+        if (m.autoplay) autoplayWhenVisible(v, slide);
         slide.appendChild(v);
         var tag = document.createElement("span");
         tag.className = "tag-video";

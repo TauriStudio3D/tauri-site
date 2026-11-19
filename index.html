@@ -8,6 +8,12 @@
   <meta property="og:title" content="Tauri Studio 3D | Impressão 3D">
   <meta property="og:description" content="Produtos impressos em 3D e catálogo de cores.">
   <meta property="og:type" content="website">
+  <meta property="og:url" content="https://tauristudio3d.github.io/tauri-site/">
+  <meta property="og:image" content="https://tauristudio3d.github.io/tauri-site/media/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://tauristudio3d.github.io/tauri-site/media/og-image.jpg">
   <link rel="icon" type="image/png" href="media/favicon.png">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -15,11 +21,21 @@
 
 <header class="topbar">
   <a class="brand" href="#inicio" aria-label="Tauri Studio 3D, início"><img src="media/logo.webp" alt="Logo da Tauri Studio 3D" width="44" height="44"></a>
-  <nav>
-    <a href="#produtos">Produtos</a>
-    <a href="#cores">Cores</a>
-    <a href="#contato">Contato</a>
-  </nav>
+  <div class="top-right">
+    <nav>
+      <a href="#produtos">Produtos</a>
+      <a href="#cores">Cores</a>
+      <a href="#pedido">Pedido</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <a class="ig-icon" id="top-instagram" href="https://www.instagram.com/" target="_blank" rel="noopener" aria-label="Instagram da Tauri Studio 3D" title="Instagram">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+        <circle cx="12" cy="12" r="4.2"></circle>
+        <circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"></circle>
+      </svg>
+    </a>
+  </div>
 </header>
 
 <main>
@@ -38,6 +54,7 @@
 
   <section id="produtos">
     <h2>Nossos produtos</h2>
+    <p class="price-note" id="price-note" hidden></p>
     <div class="filters" id="category-filters" role="group" aria-label="Filtrar por categoria"></div>
     <div class="gallery" id="gallery"></div>
     <p class="empty" id="gallery-empty" hidden>Nenhum produto nesta categoria ainda.</p>
@@ -52,6 +69,57 @@
     </div>
     <div class="colors" id="colors"></div>
     <p class="empty" id="colors-empty" hidden>Nenhuma cor encontrada.</p>
+  </section>
+
+  <section id="pedido">
+    <h2>Monte seu pedido</h2>
+    <p class="section-note">Escolha as peças e envie a lista por WhatsApp ou Instagram. O orçamento final a gente responde por mensagem.</p>
+    <div class="order-grid">
+      <form id="order-form" class="panel" novalidate>
+        <h3>Adicionar peça</h3>
+        <label>Produto
+          <select id="o-produto" required></select>
+        </label>
+        <label id="o-outro-wrap" hidden>Qual peça?
+          <input id="o-outro" type="text" maxlength="120" placeholder="Ex.: suporte de fone, nome em 3D">
+        </label>
+        <label>Cor
+          <select id="o-cor"></select>
+        </label>
+        <div class="row2">
+          <label>Quantidade
+            <input id="o-qtd" type="number" min="1" max="999" value="1" inputmode="numeric">
+          </label>
+          <label>Tamanho
+            <input id="o-tamanho" type="text" maxlength="60" placeholder="Ex.: 20 cm">
+          </label>
+        </div>
+        <p class="hint" id="o-tamanho-hint">O tamanho já vem com o padrão do produto. Pode editar.</p>
+        <p class="form-error" id="o-erro" role="alert" hidden></p>
+        <button class="btn primary" type="submit">Adicionar ao pedido</button>
+      </form>
+
+      <div class="panel" id="order-summary">
+        <h3>Seu pedido</h3>
+        <ul id="order-list" class="order-list"></ul>
+        <p class="empty" id="order-empty">Nenhuma peça adicionada ainda.</p>
+        <label>Seu nome
+          <input id="o-nome" type="text" maxlength="80" placeholder="Como podemos te chamar?">
+        </label>
+        <label>Observações
+          <textarea id="o-obs" rows="3" maxlength="500" placeholder="Prazo, mais de uma cor na mesma peça, personalização..."></textarea>
+        </label>
+        <details class="msg-preview">
+          <summary>Ver a mensagem que será enviada</summary>
+          <textarea id="o-msg" rows="9" readonly></textarea>
+        </details>
+        <div class="actions">
+          <button class="btn primary" type="button" id="send-wa" hidden>Enviar pelo WhatsApp</button>
+          <button class="btn" type="button" id="send-ig">Enviar pelo Instagram</button>
+        </div>
+        <p class="hint" id="o-feedback" role="status"></p>
+      </div>
+    </div>
   </section>
 
   <section id="contato" class="contact">
@@ -80,6 +148,7 @@
       </div>
     </div>
     <div id="cm-body"></div>
+    <div class="cm-actions"><button class="btn primary" type="button" id="cm-order">Pedir nesta cor</button></div>
   </div>
 </div>
 

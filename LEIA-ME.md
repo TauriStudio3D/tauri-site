@@ -18,10 +18,22 @@ media/       logo.webp, favicon.png e as fotos e vídeos dos produtos
 2. Abra `data.js`. Em `produtos`, cada produto tem uma lista `midia`, que vira o carrossel dele. Misture fotos e vídeos como quiser.
 3. Para um produto novo, copie um bloco existente, troque nome, categoria, descrição e arquivos.
 4. Para uma categoria nova, adicione uma linha em `categorias` e use o mesmo `id` no produto.
-5. Para cores, adicione linhas em `cores`. Se uma cor tiver `fotos`, passar o mouse mostra uma prévia e clicar abre o carrossel de peças nessa cor. Sem `fotos`, o clique mostra só o nome e o código.
+5. Para cores, adicione linhas em `cores` (nome, hex, material e acabamento). Para filamento multicolor, use uma lista de cores em `hex`. O filtro por material só aparece quando há mais de um material. Se uma cor tiver `fotos`, passar o mouse mostra uma prévia e clicar abre o carrossel de peças nessa cor. Sem `fotos`, o clique mostra só o nome e o código.
 6. Suba as mudanças.
 
-Antes de publicar, apague os produtos de exemplo e troque as cores de exemplo pelas reais.
+Padrões do catálogo:
+- A descrição segue o formato `PLA • Comprimento: X cm` ou `PLA • Altura: X cm`, com um detalhe opcional no fim.
+- `preco` é opcional e aparece no cartão. O aviso sobre os valores fica em `avisoPreco`, abaixo do título "Nossos produtos".
+- O catálogo de cores mostra no máximo 3 fotos por cor, as primeiras da lista `fotos`.
+- Antes de subir uma foto, recorte em 4:3 centralizada no objeto, sem cortar nenhuma parte da peça.
+
+## Pedido (orçamento)
+
+O cliente monta a lista (produto, cor, quantidade e tamanho) e envia para você. O orçamento final é respondido por mensagem.
+
+- O tamanho sugerido de cada produto vem de `tamanhoPadrao` no `data.js`. O cliente pode editar.
+- WhatsApp: preencha `whatsapp` no `data.js` (DDI + DDD + número, só dígitos, por exemplo "5511999999999"). Com o campo vazio, o botão de WhatsApp fica escondido.
+- Instagram: o direct não aceita texto pronto no link. O botão copia a lista e abre a conversa, e o cliente cola a mensagem.
 
 ## Preparar fotos e vídeos
 
@@ -56,3 +68,7 @@ Se os vídeos ficarem pesados, a saída é hospedá-los no YouTube (não listado
 5. O endereço sai como `tauri.pages.dev` (você escolhe o nome, se estiver livre).
 
 Para um site só de divulgação, os dois servem. O Cloudflare costuma entregar mais rápido e tem limite de arquivo menor (25 MB); o GitHub Pages é mais simples se você já usa GitHub.
+
+## Marcas dos filamentos
+
+O site não guarda nem mostra a marca dos filamentos. Como este arquivo é público, qualquer informação colocada no `data.js` pode ser vista por quem abrir o código da página. Mantenha a tabela de marcas fora do repositório.
